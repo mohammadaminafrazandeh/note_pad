@@ -48,7 +48,31 @@ class Homescreen extends StatelessWidget {
                             });
                       },
                       onLongPress: () {
-                        noteController.removeNote(index);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('آیا مطمئن به حذف هستید ؟'),
+                              content: Row(
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        noteController.removeNote(index);
+                                        Navigator.pop(context);
+                                      },
+                                      // },
+                                      child: const Icon(Icons.check)),
+                                  const Spacer(),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Icon(Icons.cancel_outlined))
+                                ],
+                              ),
+                            );
+                          },
+                        );
                       },
                     );
                   },
