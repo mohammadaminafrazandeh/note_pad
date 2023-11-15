@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:note_pad/view/screens/add_screen.dart';
+import 'package:note_pad/view/screens/add_edit_screen.dart';
 import 'package:note_pad/view/screens/home_screen.dart';
 
 GoRouter router = GoRouter(routes: [
