@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:note_pad/controller/add_or_edit.dart';
-import 'package:note_pad/controller/index.dart';
-
-import 'package:note_pad/service/hive_service.dart';
 import 'package:note_pad/routes/routes.dart';
-import 'package:note_pad/model/note.dart';
+
 import 'package:note_pad/constants/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(NoteAdapter());
   runApp(const MyApp());
 }
 
@@ -21,63 +14,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AddOrEdit()),
-        ChangeNotifierProvider(create: (context) => HiveService(),),
-        ChangeNotifierProvider(create: (context) => IndexProvider(),)
-      ],
+      providers: [],
       child: MaterialApp.router(
         routerConfig: router,
         debugShowCheckedModeBanner: false,
         locale: const Locale('fa', 'IR'),
-        theme: ThemeData(
-          scaffoldBackgroundColor: AppColors().white,
-          useMaterial3: true,
-          fontFamily: 'Iransans',
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: AppColors().jasmineColor),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-              foregroundColor: AppColors().auroMetalSaurusColor,
-              backgroundColor: AppColors().jasmineColor),
-          appBarTheme: AppBarTheme(
-              backgroundColor: AppColors().jasmineColor,
-              foregroundColor: AppColors().auroMetalSaurusColor),
-          inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(35),
-                borderSide:
-                    BorderSide(color: AppColors().auroMetalSaurusColor)),
-          ),
-          listTileTheme: ListTileThemeData(
-              titleTextStyle: TextStyle(color: AppColors().jasmineColor),
-              subtitleTextStyle:
-                  TextStyle(color: AppColors().auroMetalSaurusColor)),
-        ),
-        darkTheme: ThemeData(
-          scaffoldBackgroundColor: Colors.black,
-          useMaterial3: true,
-          fontFamily: 'Iransans',
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: AppColors().jasmineColor),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-              foregroundColor: AppColors().auroMetalSaurusColor,
-              backgroundColor: AppColors().jasmineColor),
-          appBarTheme: AppBarTheme(
-              backgroundColor: AppColors().jasmineColor,
-              foregroundColor: AppColors().auroMetalSaurusColor),
-          inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(35),
-                borderSide:
-                    BorderSide(color: AppColors().auroMetalSaurusColor)),
-          ),
-          listTileTheme: ListTileThemeData(
-              titleTextStyle: TextStyle(color: AppColors().whiteSmokeColor),
-              subtitleTextStyle:
-                  TextStyle(color: AppColors().auroMetalSaurusColor)),
-        ),
+        theme: MyLightTheme(),
         themeMode: ThemeMode.light,
       ),
+    );
+  }
+
+  ThemeData MyLightTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      fontFamily: 'Iransans',
+      scaffoldBackgroundColor: primaryColor,
+      colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+      //* APPBAR
+      appBarTheme: AppBarTheme(
+          backgroundColor: primaryColor, foregroundColor: foregroundColor),
+      //* FAB
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          foregroundColor: foregroundColor, backgroundColor: primaryColor),
+      //* INPUT
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(35),
+            borderSide: BorderSide(color: foregroundColor)),
+      ),
+      //* LIST TILE
+      listTileTheme: ListTileThemeData(
+          titleTextStyle: TextStyle(color: primaryColor),
+          subtitleTextStyle: TextStyle(color: foregroundColor)),
     );
   }
 }

@@ -9,7 +9,7 @@ GoRouter router = GoRouter(routes: [
   ),
   GoRoute(
     path: '/addscreen',
-    builder: (context, state) => AddScreen(),
+    builder: (context, state) => AddOrEditScreen(),
   )
 ]);
 
