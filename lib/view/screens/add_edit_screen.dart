@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:note_pad/controller/provider/add_or_edit.dart';
-import 'package:note_pad/controller/provider/index.dart';
-import 'package:note_pad/controller/service/database/hive_service.dart';
+import 'package:note_pad/controller/add_or_edit.dart';
+import 'package:note_pad/controller/index.dart';
+
+import 'package:note_pad/service/hive_service.dart';
 import 'package:note_pad/model/note.dart';
 import 'package:provider/provider.dart';
 

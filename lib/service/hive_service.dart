@@ -67,19 +67,4 @@ class HiveService extends ChangeNotifier {
     _notes = box.values.toList();
     notifyListeners();
   }
-
-  //  // another-way of add a note
-  // Future<void> addItem(Note note) async {
-  //   Box box = Hive.box(noteHiveBox);
-  //   box.put("title","Study Flutter");
-  //   notifyListeners();
-  // }
-
-//    // add a note with auto-increamenting keys
-//   Future<void> addItemIncreamenting(Note note) async {
-//     Box box = Hive.box(noteHiveBox);
-//     box.add('Study Flutter'); //index 0
-//     box.add('Buy a coffee');  //index 1
-//     notifyListeners();
-//   }
 }
