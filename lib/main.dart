@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_pad/routes/routes.dart';
-
 import 'package:note_pad/constants/constants.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -13,40 +11,87 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [],
-      child: MaterialApp.router(
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-        locale: const Locale('fa', 'IR'),
-        theme: MyLightTheme(),
-        themeMode: ThemeMode.light,
-      ),
+    return MaterialApp.router(
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+      locale: const Locale('fa', 'IR'),
+      theme: MyLightTheme(),
+      themeMode: ThemeMode.light,
     );
   }
 
+//*  THEMES
   ThemeData MyLightTheme() {
     return ThemeData(
-      useMaterial3: true,
-      fontFamily: 'Iransans',
-      scaffoldBackgroundColor: primaryColor,
-      colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-      //* APPBAR
-      appBarTheme: AppBarTheme(
-          backgroundColor: primaryColor, foregroundColor: foregroundColor),
-      //* FAB
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-          foregroundColor: foregroundColor, backgroundColor: primaryColor),
-      //* INPUT
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(35),
-            borderSide: BorderSide(color: foregroundColor)),
-      ),
-      //* LIST TILE
-      listTileTheme: ListTileThemeData(
-          titleTextStyle: TextStyle(color: primaryColor),
-          subtitleTextStyle: TextStyle(color: foregroundColor)),
-    );
+        useMaterial3: true,
+        fontFamily: 'Iransans',
+        scaffoldBackgroundColor: backgorundColor,
+        primaryColor: primaryColor,
+        primaryColorDark: foregroundColor,
+        primaryColorLight: subtitleColor,
+        //* APPBAR
+        appBarTheme: AppBarTheme(
+            backgroundColor: primaryColor, foregroundColor: foregroundColor),
+        //* FAB
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            foregroundColor: black, backgroundColor: primaryColor),
+        //* INPUT
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide(color: black)),
+        ),
+        //* LIST TILE
+        listTileTheme: ListTileThemeData(
+            titleTextStyle: TextStyle(color: primaryColor),
+            subtitleTextStyle: TextStyle(color: foregroundColor)),
+        //* TEXT
+        textTheme: TextTheme(
+          //* bodies
+          bodyLarge: TextStyle(
+              color: foregroundColor,
+              fontFamily: 'Iransans',
+              fontSize: 20,
+              fontWeight: FontWeight.normal),
+          bodyMedium: TextStyle(
+              color: foregroundColor,
+              fontFamily: 'Iransans',
+              fontSize: 17,
+              fontWeight: FontWeight.normal),
+          bodySmall: TextStyle(
+              color: foregroundColor,
+              fontFamily: 'Iransans',
+              fontSize: 14,
+              fontWeight: FontWeight.normal),
+          //* titles
+          titleLarge: TextStyle(
+              color: black,
+              fontFamily: 'Iransans',
+              fontSize: 23,
+              fontWeight: FontWeight.bold),
+          titleMedium: TextStyle(
+              color: black,
+              fontFamily: 'Iransans',
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+          titleSmall: TextStyle(
+              color: black,
+              fontFamily: 'Iransans',
+              fontSize: 17,
+              fontWeight: FontWeight.bold),
+        ),
+        //* ICON
+        iconTheme: IconThemeData(color: black),
+        iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: MaterialStateProperty.all(black),
+          ),
+        ),
+        //* ELEVATED BUTTON
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(primaryColor),
+          foregroundColor: MaterialStateProperty.all(black),
+        )));
   }
 }
