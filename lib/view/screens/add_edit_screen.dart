@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:note_pad/constants/constants.dart';
+import 'package:note_pad/model/note_model.dart';
 
 class AddOrEditScreen extends StatelessWidget {
   AddOrEditScreen({super.key});
   final _key = GlobalKey<FormState>();
+  late final NoteModel note;
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -28,49 +30,37 @@ class AddOrEditScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 150,
-                      child: TextFormField(
-                        expands: true,
-                        maxLines: null,
-                        onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                            labelText: 'عنوان:',
-                            labelStyle: TextStyle(fontSize: 35),
-                            floatingLabelAlignment:
-                                FloatingLabelAlignment.start,
-                            floatingLabelBehavior:
-                                FloatingLabelBehavior.always),
+                      child: MyTextFormField(
+                        labelText: 'عنوان:',
+                        onSaved: (value) {
+                          if (value != null && value.trim().isNotEmpty) {
+                            note.title = value;
+                          }
+                        },
                       ),
                     ),
+                    SizedBox(height: 20),
                     SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 400,
-                      child: TextFormField(
-                        expands: true,
-                        maxLines: null,
-                        onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
+                        height: 400,
+                        child: MyTextFormField(
                             labelText: 'توضیحات:',
-                            labelStyle: TextStyle(fontSize: 35),
-                            floatingLabelAlignment:
-                                FloatingLabelAlignment.start,
-                            floatingLabelBehavior:
-                                FloatingLabelBehavior.always),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                            onSaved: (value) {
+                              if (value != null && value.trim().isNotEmpty) {
+                                note.description = value;
+                              }
+                            })),
+                    SizedBox(height: 20),
                     SizedBox(
                       width: 200,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_key.currentState!.validate()) {
+                            _key.currentState!.save();
+                            note.createdAt = DateTime.now().toString();
+                            Navigator.pop(context, note);
+                          }
+                        },
                         child: Text(
                           'ذخیره',
                           style:
@@ -87,6 +77,40 @@ class AddOrEditScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyTextFormField extends StatelessWidget {
+  final void Function(String?)? onSaved;
+  final String labelText;
+  const MyTextFormField({
+    required this.onSaved,
+    required this.labelText,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      expands: true,
+      maxLines: null,
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: TextStyle(fontSize: 35),
+          floatingLabelAlignment: FloatingLabelAlignment.start,
+          floatingLabelBehavior: FloatingLabelBehavior.always),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'لطفا این فیلد را پر کنید';
+        } else {
+          return null;
+        }
+      },
+      onSaved: onSaved,
     );
   }
 }
