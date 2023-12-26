@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/model/note_model.dart';
+import 'package:note_pad/service/IsarService.dart';
 
 class AddOrEditScreen extends StatelessWidget {
   AddOrEditScreen({super.key});
   final _key = GlobalKey<FormState>();
-  late final NoteModel note;
+  final NoteModel note = NoteModel(title: '', description: '', createdAt: '', updatedAt: null);
+  final isarService = IsarService();
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -30,6 +32,7 @@ class AddOrEditScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 150,
+                      //* title of the note
                       child: MyTextFormField(
                         labelText: 'عنوان:',
                         onSaved: (value) {
@@ -42,6 +45,7 @@ class AddOrEditScreen extends StatelessWidget {
                     SizedBox(height: 20),
                     SizedBox(
                         height: 400,
+                        //* description of the note
                         child: MyTextFormField(
                             labelText: 'توضیحات:',
                             onSaved: (value) {
@@ -58,6 +62,7 @@ class AddOrEditScreen extends StatelessWidget {
                           if (_key.currentState!.validate()) {
                             _key.currentState!.save();
                             note.createdAt = DateTime.now().toString();
+                            isarService.addNote(note);
                             Navigator.pop(context, note);
                           }
                         },

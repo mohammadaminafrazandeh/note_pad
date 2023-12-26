@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_pad/routes/routes.dart';
 import 'package:note_pad/constants/constants.dart';
 
-void main() async {
+void main() {
   runApp(const MyApp());
 }
 
@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: 'Note Pad',
       routerConfig: router,
       debugShowCheckedModeBanner: false,
       locale: const Locale('fa', 'IR'),
