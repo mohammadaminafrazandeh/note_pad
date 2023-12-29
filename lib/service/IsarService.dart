@@ -5,18 +5,21 @@ import 'package:path_provider/path_provider.dart';
 class IsarService {
   late Future<Isar> db;
 
-  //* contructor make a instance of Isar or get instance if it already exists
+  //* constructor
   IsarService() {
     db = openDB();
   }
+
   //* add note
   Future<void> addNote(NoteModel note) async {
     final isar = await db;
+
     await isar.writeTxnSync(() async {
       await isar.collection<NoteModel>().putSync(note);
     });
   }
 
+  //* return ==> instance of Isar
   Future<Isar> openDB() async {
     final dir = await getApplicationDocumentsDirectory();
     if (Isar.instanceNames.isEmpty) {
