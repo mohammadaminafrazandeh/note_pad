@@ -92,9 +92,9 @@ NoteModel _noteModelDeserialize(
     createdAt: reader.readString(offsets[0]),
     description: reader.readString(offsets[1]),
     title: reader.readString(offsets[2]),
-    updatedAt: reader.readStringOrNull(offsets[3]),
   );
   object.id = id;
+  object.updatedAt = reader.readStringOrNull(offsets[3]);
   return object;
 }
 

@@ -13,7 +13,6 @@ class NoteModel {
   String? updatedAt; // update date of the note
 
   NoteModel({
-    required this.updatedAt,
     required this.title,
     required this.description,
     required this.createdAt,
