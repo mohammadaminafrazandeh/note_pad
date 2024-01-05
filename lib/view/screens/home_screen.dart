@@ -1,6 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:note_pad/constants/constants.dart';
+import 'package:note_pad/model/note_model.dart';
+import 'package:note_pad/service/HiveService.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -31,6 +35,7 @@ class HomeScreen extends StatelessWidget {
   final String titleTest2 = 'تست طولانی تر عنوان 2 ';
   final String titleTest3 =
       'تست خیلی طولاتی تر تر و مسخره طولانی برای یک عنوان 3';
+  late final List<NoteModel> allNotes;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -70,42 +75,34 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Builder(builder: (context) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TimelineConnector(heightOfConnector: 40),
-                              TimelineIndicator(dayNumber: 4, dayName: 'امروز'),
-                              NoteCard(
-                                heightOfConnector: 170,
-                                describtionText: describtionTest3,
-                                titleText: titleTest3,
-                              ),
-                              NoteCard(
-                                titleText: titleTest2,
-                                describtionText: describtionTest2,
-                                heightOfConnector: 170,
-                              ),
-                              TimelineIndicator(dayNumber: 3, dayName: 'دیروز'),
-                              NoteCard(
-                                titleText: titleTest2,
-                                describtionText: describtionTest2,
-                                heightOfConnector: 170,
-                              ),
-                              TimelineIndicator(dayNumber: 2, dayName: 'شنبه'),
-                              NoteCard(
-                                titleText: titleTest,
-                                describtionText: describtionTest,
-                                heightOfConnector: 170,
-                              ),
-                              NoteCard(
-                                titleText: titleTest2,
-                                describtionText: describtionTest2,
-                                heightOfConnector: 170,
-                              ),
-                            ],
-                          );
-                        }),
+                        FutureBuilder(
+                            future: context
+                                .read<HiveService>()
+                                .getNotes(boxName: noteBox),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator(); // Show a loading spinner while waiting
+                              } else if (snapshot.hasError) {
+                                return Text(
+                                    'Error: ${snapshot.error}'); // Show an error message if something goes wrong
+                              } else if (snapshot.hasData == false) {
+                                return Center(
+                                  child: Text('nothing is here'),
+                                );
+                              } else {
+                                allNotes = snapshot.data as List<NoteModel>;
+                                return Column(children: [
+                                  TimelineConnector(heightOfConnector: 50),
+                                  for (int i = 0; i < allNotes.length; i++)
+                                    NoteCard(
+                                      heightOfConnector: 50,
+                                      describtionText: allNotes[i].description,
+                                      titleText: allNotes[i].title,
+                                    ),
+                                ]);
+                              }
+                            }),
                       ],
                     ),
                   ),
