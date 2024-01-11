@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/model/note_model.dart';
 import 'package:note_pad/service/HiveService.dart';
-import 'package:provider/provider.dart';
 
 class AddOrEditScreen extends StatelessWidget {
   AddOrEditScreen({super.key});
@@ -63,11 +62,11 @@ class AddOrEditScreen extends StatelessWidget {
                         onPressed: () {
                           if (_key.currentState!.validate()) {
                             _key.currentState!.save();
+
                             note.createdAt = DateTime.now().toString();
-                            context.read<HiveService>().add(
-                                boxName: noteBox,
-                                Object:
-                                    note); //* add note to {noteBox} box in hive as {list}
+                            print('++++++++++++++++note is ${note.title}+${note.description}+${note.createdAt}+++++++++++++');
+                            HiveService.add(noteBox,
+                                note); //* add note to {noteBox} box in hive as {list}
                             Navigator.pop(context, note);
                           }
                         },
@@ -89,6 +88,7 @@ class AddOrEditScreen extends StatelessWidget {
       ),
     );
   }
+  
 }
 
 class MyTextFormField extends StatelessWidget {
@@ -103,6 +103,7 @@ class MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: key,
       expands: true,
       maxLines: null,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
@@ -114,7 +115,7 @@ class MyTextFormField extends StatelessWidget {
           floatingLabelAlignment: FloatingLabelAlignment.start,
           floatingLabelBehavior: FloatingLabelBehavior.always),
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        if (value == null || value.trim().isEmpty) {
           return 'لطفا این فیلد را پر کنید';
         } else {
           return null;

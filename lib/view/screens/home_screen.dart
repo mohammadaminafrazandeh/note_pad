@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/model/note_model.dart';
+import 'package:note_pad/repository/note_repo.dart';
+
 import 'package:note_pad/service/HiveService.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -35,7 +36,7 @@ class HomeScreen extends StatelessWidget {
   final String titleTest2 = 'تست طولانی تر عنوان 2 ';
   final String titleTest3 =
       'تست خیلی طولاتی تر تر و مسخره طولانی برای یک عنوان 3';
-  late final List<NoteModel> allNotes;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,43 +70,60 @@ class HomeScreen extends StatelessWidget {
             body: TabBarView(
               //todo need to add mechanism that filters notes by month
               children: [
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FutureBuilder(
-                            future: context
-                                .read<HiveService>()
-                                .getNotes(boxName: noteBox),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator(); // Show a loading spinner while waiting
-                              } else if (snapshot.hasError) {
-                                return Text(
-                                    'Error: ${snapshot.error}'); // Show an error message if something goes wrong
-                              } else if (snapshot.hasData == false) {
-                                return Center(
-                                  child: Text('nothing is here'),
-                                );
-                              } else {
-                                allNotes = snapshot.data as List<NoteModel>;
-                                return Column(children: [
-                                  TimelineConnector(heightOfConnector: 50),
-                                  for (int i = 0; i < allNotes.length; i++)
-                                    NoteCard(
-                                      heightOfConnector: 50,
-                                      describtionText: allNotes[i].description,
-                                      titleText: allNotes[i].title,
-                                    ),
-                                ]);
-                              }
-                            }),
-                      ],
-                    ),
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ListView.builder(itemBuilder: (context, index) {
+                        NoteRepo().getNoteList();
+                        List<NoteModel> notes = NoteRepo().noteList;
+                        return ListTile(
+                          title: Text(notes[index].title),
+                          subtitle: Text(notes[index].description),
+                        );
+                      }),
+                    )
+                    // FutureBuilder(
+                    //   future: HiveService.getAll(noteBox),
+                    //   builder: (BuildContext context, snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return Center(
+                    //           heightFactor: 20,
+                    //           child:
+                    //               CircularProgressIndicator()); // show a loading spinner while waiting
+                    //     } else if (snapshot.hasError) {
+                    //       return Text(
+                    //           'Error: ${snapshot.error}'); // show an error message if something goes wrong
+                    //     } else if (!snapshot.hasData ||
+                    //         snapshot.data!.isEmpty) {
+                    //       return Center(
+                    //           heightFactor: 20,
+                    //           child: Text('یادداشتی یافت نشد'));
+                    //     } else {
+                    //       print(snapshot.data);
+                    //       return Expanded(
+                    //         child: ListView.builder(
+                    //           // build a list view with the data
+                    //           itemCount: snapshot.data!.length,
+                    //           itemBuilder: (BuildContext context, int index) {
+                    //             return Center(
+                    //               child: ListTile(
+                    //                 title: Text(snapshot.data![index].title),
+                    //                 subtitle: Text(
+                    //                   snapshot.data![index].description,
+                    //                 ),
+                    //                 leading: Icon(Icons.circle),
+                    //                 trailing: Icon(Icons.arrow_forward),
+                    //               ),
+                    //             );
+                    //           },
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // )
+                  ],
                 ),
                 Text('2'),
                 Text('3'),

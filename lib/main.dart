@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:note_pad/model/note_model.dart';
 import 'package:note_pad/routes/routes.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/service/HiveService.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  await initPreAppServices(); //* this function called to run essesential services like HIVE
   runApp(const MyApp());
+}
+
+Future<void> initPreAppServices() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(NoteModelAdapter());
+  HiveService.openBox(noteBox);
 }
 
 class MyApp extends StatelessWidget {
@@ -15,18 +21,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => HiveService()),
-      ],
-      child: MaterialApp.router(
-        title: 'Note Pad',
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-        locale: const Locale('fa', 'IR'),
-        theme: MyLightTheme(),
-        themeMode: ThemeMode.light,
-      ),
+    return MaterialApp.router(
+      title: 'Note Pad',
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+      locale: const Locale('fa', 'IR'),
+      theme: MyLightTheme(),
+      themeMode: ThemeMode.light,
     );
   }
 
