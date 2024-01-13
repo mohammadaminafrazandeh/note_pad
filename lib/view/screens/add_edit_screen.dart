@@ -62,12 +62,14 @@ class AddOrEditScreen extends StatelessWidget {
                         onPressed: () {
                           if (_key.currentState!.validate()) {
                             _key.currentState!.save();
-
                             note.createdAt = DateTime.now().toString();
-                            print('++++++++++++++++note is ${note.title}+${note.description}+${note.createdAt}+++++++++++++');
-                            HiveService.add(noteBox,
-                                note); //* add note to {noteBox} box in hive as {list}
-                            Navigator.pop(context, note);
+                            print(
+                                '++++++++++++++++note is ${note.title}+${note.description}+${note.createdAt}+++++++++++++');
+                            HiveService.add(
+                              noteBox,
+                              note,
+                            ); //* add note to {noteBox} box in hive as {list}
+                            Navigator.pop(context);
                           }
                         },
                         child: Text(
@@ -88,7 +90,6 @@ class AddOrEditScreen extends StatelessWidget {
       ),
     );
   }
-  
 }
 
 class MyTextFormField extends StatelessWidget {

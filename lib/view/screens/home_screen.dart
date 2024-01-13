@@ -73,56 +73,54 @@ class HomeScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: ListView.builder(itemBuilder: (context, index) {
-                        NoteRepo().getNoteList();
-                        List<NoteModel> notes = NoteRepo().noteList;
-                        return ListTile(
-                          title: Text(notes[index].title),
-                          subtitle: Text(notes[index].description),
-                        );
-                      }),
+                    FutureBuilder(
+                      future: HiveService.getAll(noteBox),
+                      builder: (BuildContext context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                              heightFactor: 20,
+                              child:
+                                  CircularProgressIndicator()); // show a loading spinner while waiting
+                        } else if (snapshot.hasError) {
+                          return Text(
+                              'Error: ${snapshot.error}'); // show an error message if something goes wrong
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return Center(
+                              heightFactor: 20,
+                              child: Text('یادداشتی یافت نشد'));
+                        } else {
+                          print(snapshot.data);
+                          return Expanded(
+                            child: ListView.builder(
+                              // build a list view with the data
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TimelineConnector(heightOfConnector: 40),
+                                      TimelineIndicator(
+                                          dayName: 's', dayNumber: 1),
+                                      NoteCard(
+                                          heightOfConnector: 168,
+                                          describtionText:
+                                              snapshot.data![index].description,
+                                          titleText:
+                                              snapshot.data![index].title),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
                     )
-                    // FutureBuilder(
-                    //   future: HiveService.getAll(noteBox),
-                    //   builder: (BuildContext context, snapshot) {
-                    //     if (snapshot.connectionState ==
-                    //         ConnectionState.waiting) {
-                    //       return Center(
-                    //           heightFactor: 20,
-                    //           child:
-                    //               CircularProgressIndicator()); // show a loading spinner while waiting
-                    //     } else if (snapshot.hasError) {
-                    //       return Text(
-                    //           'Error: ${snapshot.error}'); // show an error message if something goes wrong
-                    //     } else if (!snapshot.hasData ||
-                    //         snapshot.data!.isEmpty) {
-                    //       return Center(
-                    //           heightFactor: 20,
-                    //           child: Text('یادداشتی یافت نشد'));
-                    //     } else {
-                    //       print(snapshot.data);
-                    //       return Expanded(
-                    //         child: ListView.builder(
-                    //           // build a list view with the data
-                    //           itemCount: snapshot.data!.length,
-                    //           itemBuilder: (BuildContext context, int index) {
-                    //             return Center(
-                    //               child: ListTile(
-                    //                 title: Text(snapshot.data![index].title),
-                    //                 subtitle: Text(
-                    //                   snapshot.data![index].description,
-                    //                 ),
-                    //                 leading: Icon(Icons.circle),
-                    //                 trailing: Icon(Icons.arrow_forward),
-                    //               ),
-                    //             );
-                    //           },
-                    //         ),
-                    //       );
-                    //     }
-                    //   },
-                    // )
                   ],
                 ),
                 Text('2'),

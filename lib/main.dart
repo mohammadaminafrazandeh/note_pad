@@ -4,14 +4,17 @@ import 'package:note_pad/model/note_model.dart';
 import 'package:note_pad/routes/routes.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/service/HiveService.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initPreAppServices(); //* this function called to run essesential services like HIVE
   runApp(const MyApp());
 }
 
 Future<void> initPreAppServices() async {
-  await Hive.initFlutter();
+  final dir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter(dir.path);
   Hive.registerAdapter(NoteModelAdapter());
   HiveService.openBox(noteBox);
 }

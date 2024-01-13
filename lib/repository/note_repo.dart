@@ -1,22 +1,21 @@
-//* this file help to get the data from HiveService 
+//* this file help to get the data from HiveService
 
-
-import 'package:note_pad/constants/constants.dart';
-import 'package:note_pad/model/note_model.dart';
 import 'package:note_pad/service/HiveService.dart';
+import '../constants/constants.dart';
 
 class NoteRepo {
-  List<NoteModel> _noteList = [];
-  //getter 
-  List<NoteModel> get noteList => _noteList;
+  List<dynamic> _noteList = [];
+  //getter
+  List<dynamic> get noteList => _noteList;
 
   Future<void> getNoteList() async {
-    _noteList = await HiveService.getAll<NoteModel>(noteBox);
+    var box = await HiveService.openBox(noteBox);
+    _noteList = box.values.toList();
     print('note list is ${_noteList.length}');
   }
-  void clearNoteList(){
+
+  void clearNoteList() {
     _noteList = [];
   }
 //-------------------------------------------------------------
-
 }
