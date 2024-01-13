@@ -93,29 +93,28 @@ class HomeScreen extends StatelessWidget {
                         } else {
                           print(snapshot.data);
                           return Expanded(
-                            child: ListView.builder(
-                              // build a list view with the data
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 20),
-                                  child: Column(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20, right: 20),
+                              child: ListView.builder(
+                                // build a list view with the data
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      TimelineConnector(heightOfConnector: 40),
                                       TimelineIndicator(
                                           dayName: 's', dayNumber: 1),
                                       NoteCard(
-                                          heightOfConnector: 168,
+                                          heightOfConnector: 180,
                                           describtionText:
                                               snapshot.data![index].description,
                                           titleText:
                                               snapshot.data![index].title),
                                     ],
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           );
                         }
