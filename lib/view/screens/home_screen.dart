@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:note_pad/constants/constants.dart';
-import 'package:note_pad/model/note_model.dart';
-import 'package:note_pad/repository/note_repo.dart';
 
 import 'package:note_pad/service/HiveService.dart';
 
@@ -76,6 +74,28 @@ class HomeScreen extends StatelessWidget {
                     FutureBuilder(
                       future: HiveService.getAll(noteBox),
                       builder: (BuildContext context, snapshot) {
+                        String weekDay(int weekDayDateTime) {
+                          int dayOfWeek = weekDayDateTime;
+                          switch (dayOfWeek) {
+                            case 0:
+                              return 'یکشنبه';
+                            case 1:
+                              return 'دوشنبه';
+                            case 2:
+                              return 'سه‌شنبه';
+                            case 3:
+                              return 'چهارشنبه';
+                            case 4:
+                              return 'پنجشنبه';
+                            case 5:
+                              return 'جمعه';
+                            case 6:
+                              return 'شنبه';
+                            default:
+                              return 'باگ';
+                          }
+                        }
+
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Center(
@@ -104,7 +124,13 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       TimelineIndicator(
-                                          dayName: 's', dayNumber: 1),
+                                          dayName: weekDay(DateTime.parse(
+                                                  snapshot
+                                                      .data![index].createdAt)
+                                              .weekday),
+                                          dayNumber: DateTime.parse(snapshot
+                                                  .data![index].createdAt)
+                                              .day),
                                       NoteCard(
                                           heightOfConnector: 180,
                                           describtionText:
