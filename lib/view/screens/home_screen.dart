@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:note_pad/constants/constants.dart';
 
 import 'package:note_pad/service/HiveService.dart';
+import 'package:note_pad/service/date_service.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -20,7 +21,7 @@ class HomeScreen extends StatelessWidget {
     'آذر',
     'دی',
     'بهمن',
-    'اسفند'
+    'اسفند',
   ];
 
   //! temporary const files
@@ -37,6 +38,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getMonthList();
     return SafeArea(
       child: Directionality(
         textDirection: TextDirection.rtl,
