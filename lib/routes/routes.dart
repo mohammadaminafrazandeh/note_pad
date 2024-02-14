@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:note_pad/view/screens/add_edit_screen.dart';
-import 'package:note_pad/view/screens/home_screen.dart';
+import 'package:note_pad/view/screens/add_edit/add_edit.dart';
+import 'package:note_pad/view/screens/home.dart';
 
 GoRouter router = GoRouter(routes: [
   GoRoute(
@@ -12,4 +12,3 @@ GoRouter router = GoRouter(routes: [
     builder: (context, state) => AddOrEditScreen(),
   )
 ]);
-
