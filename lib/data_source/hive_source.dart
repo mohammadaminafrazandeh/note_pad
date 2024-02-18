@@ -48,9 +48,36 @@ class HiveNotesSource implements DataSource<NoteModel> {
   }
 
   @override
-  Future<List<NoteModel>> getByDateMonth(Jalali month) async {
-    return box.values
-        .where((NoteModel note) => note.createdAt.month == month)
+  Future<List<Map<int, int>>> yearMonthExist({String Keyword = ''}) async {
+    List<NoteModel> records = [];
+    records = box.values
+        .where((NoteModel record) => record.title.contains(Keyword))
         .toList();
+    List<Jalali> timeStamps = [];
+    for (var record in records) {
+      timeStamps.add(record.createdAt);
+    }
+    Map<int, int> timeStampsYearMonth = {};
+    List<Map<int, int>> result = [];
+    for (var timeStamp in timeStamps) {
+      timeStampsYearMonth = {timeStamp.year: timeStamp.month};
+      result.add(timeStampsYearMonth);
+    }
+    result = (result.toSet()).toList();
+    return result;
+  }
+
+  @override
+  Future<List<NoteModel>> getByDateYearMonth(
+      Future<List<Map<int, int>>> yearMonthTimeStamps) async {
+    List<NoteModel> notes = [];
+    List<Map<int, int>> timeStamps = await yearMonthTimeStamps;
+    for (var timeStamp in timeStamps) {
+      NoteModel note = box.values.firstWhere((NoteModel note) =>
+          note.createdAt.year == timeStamp.keys.first &&
+          note.createdAt.month == timeStamp.values.first);
+      notes.add(note);
+    }
+    return notes;
   }
 }

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_pad/data_source/data_source.dart';
 
-class Repository<T> extends ChangeNotifier implements DataSource<T> {
+class Repository<T> extends ChangeNotifier implements DataSource {
   DataSource<T> localDataSource;
   Repository({
     required this.localDataSource,
@@ -44,9 +44,13 @@ class Repository<T> extends ChangeNotifier implements DataSource<T> {
   }
 
   @override
-  Future<List<T>> getByDateMonth(month) async {
-    List<T> result = await localDataSource.getByDateMonth(month);
-    notifyListeners();
-    return result;
+  Future<List<Map<int, int>>> yearMonthExist({String Keyword = ''}) {
+    return localDataSource.yearMonthExist(Keyword: Keyword);
+  }
+
+  @override
+  Future<List> getByDateYearMonth(
+      Future<List<Map<int, int>>> yearMonthTimeStamps) {
+    return localDataSource.getByDateYearMonth(yearMonthTimeStamps);
   }
 }

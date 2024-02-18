@@ -7,5 +7,7 @@ abstract class DataSource<T> {
   Future<void> delete(T data);
   Future<void> deleteByID(int id);
   Future<void> deleteAll();
-  Future<List<T>> getByDateMonth(Jalali month);
+  Future<List<Map<int, int>>> yearMonthExist({String Keyword = ''});
+  Future<List<T>> getByDateYearMonth(
+      Future<List<Map<int, int>>> yearMonthTimeStamps);
 }
