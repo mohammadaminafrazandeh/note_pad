@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 
 //-----------------------
 part 'note_model.g.dart';
@@ -9,18 +8,11 @@ part 'note_model.g.dart';
 class NoteModel extends HiveObject {
   int id = -1;
   @HiveField(0)
-  String title; // title of the note
+  String title = 'عنوان ندارد'; // title of the note
   @HiveField(1)
-  String description; // description of the note
+  String description = 'توضیحات ندارد'; // description of the note
   @HiveField(2)
-  Jalali createdAt; // creation date of the note
+  DateTime createdAt = DateTime.now(); // creation date of the note
   @HiveField(3)
-  Jalali? updatedAt; // update date of the note
-
-  NoteModel({
-    required this.title,
-    required this.description,
-    required this.createdAt,
-    this.updatedAt,
-  });
+  DateTime? updatedAt; // update date of the note
 }

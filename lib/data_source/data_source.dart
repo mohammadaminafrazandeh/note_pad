@@ -1,5 +1,3 @@
-import 'package:shamsi_date/shamsi_date.dart';
-
 abstract class DataSource<T> {
   Future<List<T>> getAll({String Keyword = ''});
   Future<T> getById(String id);
@@ -7,7 +5,6 @@ abstract class DataSource<T> {
   Future<void> delete(T data);
   Future<void> deleteByID(int id);
   Future<void> deleteAll();
-  Future<List<Map<int, int>>> yearMonthExist({String Keyword = ''});
-  Future<List<T>> getByDateYearMonth(
-      Future<List<Map<int, int>>> yearMonthTimeStamps);
+  Map<int, int> yearMonthExist({String Keyword = ''});
+  List<T> getByDateYearMonth(List<Map<int, int>> yearMonthTimeStamps);
 }

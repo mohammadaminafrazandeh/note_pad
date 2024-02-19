@@ -4,8 +4,8 @@ import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/data/model/note_model.dart';
 import 'package:note_pad/data_source/hive_source.dart';
 import 'package:note_pad/repo/repository.dart';
-import 'package:note_pad/routes/routes.dart';
 import 'package:note_pad/theme/theme.dart';
+import 'package:note_pad/view/screens/home/home.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -23,13 +23,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Note Pad',
-      routerConfig: router,
       debugShowCheckedModeBanner: false,
       locale: const Locale('fa', 'IR'),
       theme: MyLightTheme(),
       themeMode: ThemeMode.light,
+      home: HomeScreen(),
     );
   }
 }

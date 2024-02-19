@@ -1,39 +1,5 @@
 import 'package:flutter/material.dart';
-
-class MyTextFormField extends StatelessWidget {
-  final void Function(String?)? onSaved;
-  final String labelText;
-  const MyTextFormField({
-    required this.onSaved,
-    required this.labelText,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      key: key,
-      expands: true,
-      maxLines: null,
-      onTapOutside: (_) => FocusScope.of(context).unfocus(),
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: TextStyle(fontSize: 35),
-          floatingLabelAlignment: FloatingLabelAlignment.start,
-          floatingLabelBehavior: FloatingLabelBehavior.always),
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'لطفا این فیلد را پر کنید';
-        } else {
-          return null;
-        }
-      },
-      onSaved: onSaved,
-    );
-  }
-}
+import 'package:lottie/lottie.dart';
 
 class NoteCard extends StatelessWidget {
   final double heightOfConnector;
@@ -151,6 +117,33 @@ class TimelineConnector extends StatelessWidget {
       height: heightOfConnector,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColorLight,
+      ),
+    );
+  }
+}
+
+class EmptyWidget extends StatelessWidget {
+  const EmptyWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+                width: 300,
+                child: Lottie.asset('assets/animations/emptyState.json')),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'هنوز یادداشتی، وارد نشده!',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ],
       ),
     );
   }

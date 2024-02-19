@@ -16,12 +16,11 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return NoteModel(
-      title: fields[0] as String,
-      description: fields[1] as String,
-      createdAt: fields[2] as Jalali,
-      updatedAt: fields[3] as Jalali?,
-    );
+    return NoteModel()
+      ..title = fields[0] as String
+      ..description = fields[1] as String
+      ..createdAt = fields[2] as DateTime
+      ..updatedAt = fields[3] as DateTime?;
   }
 
   @override

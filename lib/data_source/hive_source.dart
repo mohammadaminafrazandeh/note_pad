@@ -48,34 +48,30 @@ class HiveNotesSource implements DataSource<NoteModel> {
   }
 
   @override
-  Future<List<Map<int, int>>> yearMonthExist({String Keyword = ''}) async {
+  Map<int, int> yearMonthExist({String Keyword = ''}) {
     List<NoteModel> records = [];
     records = box.values
         .where((NoteModel record) => record.title.contains(Keyword))
         .toList();
     List<Jalali> timeStamps = [];
     for (var record in records) {
-      timeStamps.add(record.createdAt);
+      timeStamps.add(record.createdAt.toJalali());
     }
     Map<int, int> timeStampsYearMonth = {};
-    List<Map<int, int>> result = [];
     for (var timeStamp in timeStamps) {
-      timeStampsYearMonth = {timeStamp.year: timeStamp.month};
-      result.add(timeStampsYearMonth);
+      timeStampsYearMonth.addAll({timeStamp.year: timeStamp.month});
     }
-    result = (result.toSet()).toList();
-    return result;
+    return timeStampsYearMonth;
   }
 
   @override
-  Future<List<NoteModel>> getByDateYearMonth(
-      Future<List<Map<int, int>>> yearMonthTimeStamps) async {
+  List<NoteModel> getByDateYearMonth(List<Map<int, int>> yearMonthTimeStamps) {
     List<NoteModel> notes = [];
-    List<Map<int, int>> timeStamps = await yearMonthTimeStamps;
+    List<Map<int, int>> timeStamps = yearMonthTimeStamps;
     for (var timeStamp in timeStamps) {
       NoteModel note = box.values.firstWhere((NoteModel note) =>
-          note.createdAt.year == timeStamp.keys.first &&
-          note.createdAt.month == timeStamp.values.first);
+          note.createdAt.toJalali().year == timeStamp.keys.first &&
+          note.createdAt.toJalali().month == timeStamp.values.first);
       notes.add(note);
     }
     return notes;

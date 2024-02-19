@@ -44,13 +44,12 @@ class Repository<T> extends ChangeNotifier implements DataSource {
   }
 
   @override
-  Future<List<Map<int, int>>> yearMonthExist({String Keyword = ''}) {
+  Map<int, int> yearMonthExist({String Keyword = ''}) {
     return localDataSource.yearMonthExist(Keyword: Keyword);
   }
 
   @override
-  Future<List> getByDateYearMonth(
-      Future<List<Map<int, int>>> yearMonthTimeStamps) {
+  List getByDateYearMonth(List<Map<int, int>> yearMonthTimeStamps) {
     return localDataSource.getByDateYearMonth(yearMonthTimeStamps);
   }
 }
