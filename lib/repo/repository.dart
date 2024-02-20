@@ -49,7 +49,7 @@ class Repository<T> extends ChangeNotifier implements DataSource {
   }
 
   @override
-  List getByDateYearMonth(List<Map<int, int>> yearMonthTimeStamps) {
-    return localDataSource.getByDateYearMonth(yearMonthTimeStamps);
+  List<T> getByDateYearMonth(int year, int month) {
+    return localDataSource.getByDateYearMonth(year, month);
   }
 }

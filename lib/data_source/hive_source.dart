@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_pad/data_source/data_source.dart';
 import 'package:note_pad/data/model/note_model.dart';
@@ -57,23 +59,45 @@ class HiveNotesSource implements DataSource<NoteModel> {
     for (var record in records) {
       timeStamps.add(record.createdAt.toJalali());
     }
-    Map<int, int> timeStampsYearMonth = {};
+    List<int> years = [];
+    List<int> months = [];
+    List<int> uniqueYear = [];
+    List<int> uniqueMonth = [];
     for (var timeStamp in timeStamps) {
-      timeStampsYearMonth.addAll({timeStamp.year: timeStamp.month});
+      years.add(timeStamp.year);
+      months.add(timeStamp.month);
     }
+    for (var year in years) {
+      for (var i = 0; i < months.length; i++) {
+        if (months[years.indexOf(year)] != months[i]) {
+          uniqueMonth.add(months[i]);
+          uniqueYear.add(year);
+        } else if (months[years.indexOf(year)] == months[i]) {
+          if (!uniqueMonth.contains(months[i])) {
+            uniqueMonth.add(months[i]);
+            uniqueYear.add(year);
+          }
+        }
+      }
+    }
+
+    //
+    Map<int, int> timeStampsYearMonth = {};
+    for (var year in uniqueYear) {
+      timeStampsYearMonth[year] = uniqueMonth[uniqueYear.indexOf(year)];
+    }
+    //
     return timeStampsYearMonth;
   }
 
   @override
-  List<NoteModel> getByDateYearMonth(List<Map<int, int>> yearMonthTimeStamps) {
+  List<NoteModel> getByDateYearMonth(int year, int month) {
     List<NoteModel> notes = [];
-    List<Map<int, int>> timeStamps = yearMonthTimeStamps;
-    for (var timeStamp in timeStamps) {
-      NoteModel note = box.values.firstWhere((NoteModel note) =>
-          note.createdAt.toJalali().year == timeStamp.keys.first &&
-          note.createdAt.toJalali().month == timeStamp.values.first);
-      notes.add(note);
-    }
+    notes = box.values
+        .where((NoteModel note) =>
+            note.createdAt.toJalali().year == year &&
+            note.createdAt.toJalali().month == month)
+        .toList();
     return notes;
   }
 }

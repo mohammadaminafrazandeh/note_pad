@@ -83,7 +83,53 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  EmptyWidget(),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        for (int i = 0;
+                            i < repository.yearMonthExist().length;
+                            i++)
+                          ListView.builder(
+                              itemCount: repository
+                                  .getByDateYearMonth(
+                                      repository
+                                          .yearMonthExist()
+                                          .keys
+                                          .toList()[i],
+                                      repository
+                                          .yearMonthExist()
+                                          .values
+                                          .toList()[i])
+                                  .length,
+                              itemBuilder: (context, index) {
+                                return NoteCard(
+                                    heightOfConnector: 40,
+                                    describtionText: repository
+                                        .getByDateYearMonth(
+                                            repository
+                                                .yearMonthExist()
+                                                .keys
+                                                .toList()[i],
+                                            repository
+                                                .yearMonthExist()
+                                                .values
+                                                .toList()[i])[i]
+                                        .description,
+                                    titleText: repository
+                                        .getByDateYearMonth(
+                                            repository
+                                                .yearMonthExist()
+                                                .keys
+                                                .toList()[i],
+                                            repository
+                                                .yearMonthExist()
+                                                .values
+                                                .toList()[i])[i]
+                                        .title);
+                              }),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
