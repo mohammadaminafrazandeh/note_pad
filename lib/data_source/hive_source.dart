@@ -91,12 +91,10 @@ class HiveNotesSource implements DataSource<NoteModel> {
   }
 
   @override
-  List<NoteModel> getByDateYearMonth(int year, int month) {
+  List<NoteModel> getByMonthDate(int month) {
     List<NoteModel> notes = [];
     notes = box.values
-        .where((NoteModel note) =>
-            note.createdAt.toJalali().year == year &&
-            note.createdAt.toJalali().month == month)
+        .where((NoteModel note) => note.createdAt.toJalali().month == month)
         .toList();
     return notes;
   }

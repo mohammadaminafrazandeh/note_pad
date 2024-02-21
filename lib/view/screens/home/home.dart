@@ -8,9 +8,11 @@ import 'package:note_pad/repo/repository.dart';
 import 'package:note_pad/view/screens/add_edit/add_edit.dart';
 import 'package:note_pad/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+
   List<String> monthsInPersian = [
     'فروردین',
     'اردیبهشت',
@@ -25,6 +27,7 @@ class HomeScreen extends StatelessWidget {
     'بهمن',
     'اسفند'
   ];
+
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
@@ -34,7 +37,8 @@ class HomeScreen extends StatelessWidget {
         child: Consumer<Repository<NoteModel>>(
             builder: (context, repository, child) {
           return DefaultTabController(
-            length: repository.yearMonthExist().length,
+            initialIndex: Jalali.now().month - 1,
+            length: 12,
             child: Scaffold(
               body: Column(
                 children: [
@@ -70,65 +74,44 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        TabBar(tabs: [
-                          for (int i = 0;
-                              i < repository.yearMonthExist().length;
-                              i++)
-                            Tab(
-                              child: Text(
-                                '${monthsInPersian[repository.yearMonthExist().values.toList()[i] - 1]} ${repository.yearMonthExist().keys.toList()[i].toString()}',
-                              ),
-                            ),
-                        ])
+                        TabBar(
+                          isScrollable: true,
+                          tabs: //month in persian
+                              monthsInPersian.map((e) => Text(e)).toList(),
+                        ),
                       ],
                     ),
                   ),
                   Expanded(
                     child: TabBarView(
-                      children: [
-                        for (int i = 0;
-                            i < repository.yearMonthExist().length;
-                            i++)
-                          ListView.builder(
-                              itemCount: repository
-                                  .getByDateYearMonth(
-                                      repository
-                                          .yearMonthExist()
-                                          .keys
-                                          .toList()[i],
-                                      repository
-                                          .yearMonthExist()
-                                          .values
-                                          .toList()[i])
-                                  .length,
-                              itemBuilder: (context, index) {
-                                return NoteCard(
-                                    heightOfConnector: 40,
-                                    describtionText: repository
-                                        .getByDateYearMonth(
-                                            repository
-                                                .yearMonthExist()
-                                                .keys
-                                                .toList()[i],
-                                            repository
-                                                .yearMonthExist()
-                                                .values
-                                                .toList()[i])[i]
-                                        .description,
-                                    titleText: repository
-                                        .getByDateYearMonth(
-                                            repository
-                                                .yearMonthExist()
-                                                .keys
-                                                .toList()[i],
-                                            repository
-                                                .yearMonthExist()
-                                                .values
-                                                .toList()[i])[i]
-                                        .title);
-                              }),
-                      ],
-                    ),
+                        children:
+                            List.generate(monthsInPersian.length, (monthIndex) {
+                      return ListView.builder(
+                          itemBuilder: (context, noteModelIndex) {
+                            if (repository
+                                .getByMonthDate(monthIndex + 1)
+                                .isNotEmpty) {
+                              return NoteCard(
+                                heightOfConnector: 40,
+                                describtionText: repository
+                                    .getByMonthDate(
+                                        monthIndex + 1)[noteModelIndex]
+                                    .description,
+                                titleText: repository
+                                    .getByMonthDate(
+                                        monthIndex + 1)[noteModelIndex]
+                                    .title,
+                              );
+                            } else {
+                              return EmptyWidget();
+                            }
+                          },
+                          itemCount: repository
+                                  .getByMonthDate(monthIndex + 1)
+                                  .isNotEmpty
+                              ? repository.getByMonthDate(monthIndex + 1).length
+                              : 1);
+                    })),
                   ),
                 ],
               ),
