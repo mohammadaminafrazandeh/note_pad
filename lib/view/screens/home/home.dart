@@ -91,17 +91,74 @@ class HomeScreen extends StatelessWidget {
                             if (repository
                                 .getByMonthDate(monthIndex + 1)
                                 .isNotEmpty) {
-                              return NoteCard(
-                                heightOfConnector: 40,
-                                describtionText: repository
-                                    .getByMonthDate(
-                                        monthIndex + 1)[noteModelIndex]
-                                    .description,
-                                titleText: repository
-                                    .getByMonthDate(
-                                        monthIndex + 1)[noteModelIndex]
-                                    .title,
-                              );
+                              if (noteModelIndex == 0) {
+                                return Row(
+                                  children: [
+                                    TimelineConnector(heightOfConnector: 40)
+                                  ],
+                                );
+                              } else if (noteModelIndex ==
+                                  repository
+                                      .getByMonthDate(monthIndex + 1)
+                                      .length) {
+                                return Column(
+                                  children: [
+                                    TimelineIndicator(
+                                        dayName: getWeekDay(repository
+                                            .getByMonthDate(monthIndex + 1)[
+                                                noteModelIndex - 1]
+                                            .createdAt
+                                            .toJalali()
+                                            .weekDay),
+                                        dayNumber: repository
+                                            .getByMonthDate(monthIndex + 1)[
+                                                noteModelIndex - 1]
+                                            .createdAt
+                                            .toJalali()
+                                            .day),
+                                    NoteCard(
+                                      heightOfConnector: 0,
+                                      describtionText: repository
+                                          .getByMonthDate(monthIndex + 1)[
+                                              noteModelIndex - 1]
+                                          .description,
+                                      titleText: repository
+                                          .getByMonthDate(monthIndex + 1)[
+                                              noteModelIndex - 1]
+                                          .title,
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Column(
+                                  children: [
+                                    TimelineIndicator(
+                                        dayName: getWeekDay(repository
+                                            .getByMonthDate(monthIndex + 1)[
+                                                noteModelIndex - 1]
+                                            .createdAt
+                                            .toJalali()
+                                            .weekDay),
+                                        dayNumber: repository
+                                            .getByMonthDate(monthIndex + 1)[
+                                                noteModelIndex - 1]
+                                            .createdAt
+                                            .toJalali()
+                                            .day),
+                                    NoteCard(
+                                      heightOfConnector: 220,
+                                      describtionText: repository
+                                          .getByMonthDate(monthIndex + 1)[
+                                              noteModelIndex - 1]
+                                          .description,
+                                      titleText: repository
+                                          .getByMonthDate(monthIndex + 1)[
+                                              noteModelIndex - 1]
+                                          .title,
+                                    ),
+                                  ],
+                                );
+                              }
                             } else {
                               return EmptyWidget();
                             }
@@ -109,7 +166,10 @@ class HomeScreen extends StatelessWidget {
                           itemCount: repository
                                   .getByMonthDate(monthIndex + 1)
                                   .isNotEmpty
-                              ? repository.getByMonthDate(monthIndex + 1).length
+                              ? repository
+                                      .getByMonthDate(monthIndex + 1)
+                                      .length +
+                                  1
                               : 1);
                     })),
                   ),
@@ -120,5 +180,26 @@ class HomeScreen extends StatelessWidget {
         }),
       ),
     );
+  }
+
+  String getWeekDay(int day) {
+    switch (day) {
+      case 1:
+        return 'شنبه';
+      case 2:
+        return 'یکشنبه';
+      case 3:
+        return 'دوشنبه';
+      case 4:
+        return 'سه شنبه';
+      case 5:
+        return 'چهارشنبه';
+      case 6:
+        return 'پنجشنبه';
+      case 7:
+        return 'جمعه';
+      default:
+        return '';
+    }
   }
 }

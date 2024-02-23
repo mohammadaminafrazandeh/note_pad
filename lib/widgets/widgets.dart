@@ -133,6 +133,7 @@ class EmptyWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 200),
           Center(
             child: Container(
                 width: 300,
