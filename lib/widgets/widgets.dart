@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:note_pad/constants/constants.dart';
 
 class NoteCard extends StatelessWidget {
   final double heightOfConnector;
@@ -43,7 +45,7 @@ class NoteCard extends StatelessWidget {
                     child: Text(
                       describtionText,
                       softWrap: true,
-                      maxLines: 5,
+                      maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                     )),
               ],
@@ -56,10 +58,12 @@ class NoteCard extends StatelessWidget {
 }
 
 class TimelineIndicator extends StatelessWidget {
+  final Function()? onTap;
   final int dayNumber;
   final String dayName;
   const TimelineIndicator({
     Key? key,
+    this.onTap,
     required this.dayName,
     required this.dayNumber,
   }) : super(key: key);
@@ -97,6 +101,20 @@ class TimelineIndicator extends StatelessWidget {
                 .copyWith(fontWeight: FontWeight.normal),
           ),
         ),
+        SizedBox(width: 150),
+        InkWell(
+          onTap: onTap,
+          child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                  color: Colors.red[300],
+                  borderRadius: BorderRadius.circular(20)),
+              child: Icon(
+                CupertinoIcons.delete,
+                color: Colors.white,
+              )),
+        )
       ],
     );
   }

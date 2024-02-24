@@ -16,8 +16,8 @@ class Repository<T> extends ChangeNotifier implements DataSource {
   }
 
   @override
-  Future<void> delete(data) async {
-    await localDataSource.delete(data);
+  void delete(data) {
+    localDataSource.delete(data);
     notifyListeners();
   }
 

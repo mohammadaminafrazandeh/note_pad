@@ -11,7 +11,7 @@ Color black = const Color(0xff000000); //title
 String notesBox = 'notesBox';
 
 //* list of months for tabbar
-final List<String> Months = [
+final List<String> monthsInPersian = [
   'فروردین',
   'اردیبهشت',
   'خرداد',
@@ -23,5 +23,5 @@ final List<String> Months = [
   'آذر',
   'دی',
   'بهمن',
-  'اسفند',
+  'اسفند'
 ];

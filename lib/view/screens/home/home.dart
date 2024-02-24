@@ -1,7 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/data/model/note_model.dart';
 import 'package:note_pad/repo/repository.dart';
@@ -12,21 +10,6 @@ import 'package:shamsi_date/shamsi_date.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
-  List<String> monthsInPersian = [
-    'فروردین',
-    'اردیبهشت',
-    'خرداد',
-    'تیر',
-    'مرداد',
-    'شهریور',
-    'مهر',
-    'آبان',
-    'آذر',
-    'دی',
-    'بهمن',
-    'اسفند'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -84,94 +67,122 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: TabBarView(
-                        children:
-                            List.generate(monthsInPersian.length, (monthIndex) {
-                      return ListView.builder(
-                          itemBuilder: (context, noteModelIndex) {
-                            if (repository
-                                .getByMonthDate(monthIndex + 1)
-                                .isNotEmpty) {
-                              if (noteModelIndex == 0) {
-                                return Row(
-                                  children: [
-                                    TimelineConnector(heightOfConnector: 40)
-                                  ],
-                                );
-                              } else if (noteModelIndex ==
-                                  repository
+                      children: List.generate(
+                        monthsInPersian.length,
+                        (monthIndex) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: ListView.builder(
+                                itemBuilder: (context, noteModelIndex) {
+                                  if (repository
                                       .getByMonthDate(monthIndex + 1)
-                                      .length) {
-                                return Column(
-                                  children: [
-                                    TimelineIndicator(
-                                        dayName: getWeekDay(repository
-                                            .getByMonthDate(monthIndex + 1)[
-                                                noteModelIndex - 1]
-                                            .createdAt
-                                            .toJalali()
-                                            .weekDay),
-                                        dayNumber: repository
-                                            .getByMonthDate(monthIndex + 1)[
-                                                noteModelIndex - 1]
-                                            .createdAt
-                                            .toJalali()
-                                            .day),
-                                    NoteCard(
-                                      heightOfConnector: 0,
-                                      describtionText: repository
-                                          .getByMonthDate(monthIndex + 1)[
-                                              noteModelIndex - 1]
-                                          .description,
-                                      titleText: repository
-                                          .getByMonthDate(monthIndex + 1)[
-                                              noteModelIndex - 1]
-                                          .title,
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Column(
-                                  children: [
-                                    TimelineIndicator(
-                                        dayName: getWeekDay(repository
-                                            .getByMonthDate(monthIndex + 1)[
-                                                noteModelIndex - 1]
-                                            .createdAt
-                                            .toJalali()
-                                            .weekDay),
-                                        dayNumber: repository
-                                            .getByMonthDate(monthIndex + 1)[
-                                                noteModelIndex - 1]
-                                            .createdAt
-                                            .toJalali()
-                                            .day),
-                                    NoteCard(
-                                      heightOfConnector: 220,
-                                      describtionText: repository
-                                          .getByMonthDate(monthIndex + 1)[
-                                              noteModelIndex - 1]
-                                          .description,
-                                      titleText: repository
-                                          .getByMonthDate(monthIndex + 1)[
-                                              noteModelIndex - 1]
-                                          .title,
-                                    ),
-                                  ],
-                                );
-                              }
-                            } else {
-                              return EmptyWidget();
-                            }
-                          },
-                          itemCount: repository
-                                  .getByMonthDate(monthIndex + 1)
-                                  .isNotEmpty
-                              ? repository
-                                      .getByMonthDate(monthIndex + 1)
-                                      .length +
-                                  1
-                              : 1);
-                    })),
+                                      .isNotEmpty) {
+                                    if (noteModelIndex == 0) {
+                                      return Row(
+                                        children: [
+                                          TimelineConnector(
+                                              heightOfConnector: 40)
+                                        ],
+                                      );
+                                    } else if (noteModelIndex ==
+                                        repository
+                                            .getByMonthDate(monthIndex + 1)
+                                            .length) {
+                                      return Column(
+                                        children: [
+                                          TimelineIndicator(
+                                            dayName: getWeekDay(repository
+                                                .getByMonthDate(monthIndex + 1)[
+                                                    noteModelIndex - 1]
+                                                .createdAt
+                                                .toJalali()
+                                                .weekDay),
+                                            dayNumber: repository
+                                                .getByMonthDate(monthIndex + 1)[
+                                                    noteModelIndex - 1]
+                                                .createdAt
+                                                .toJalali()
+                                                .day,
+                                            onTap: () => repository.delete(
+                                                repository.getByMonthDate(
+                                                    monthIndex +
+                                                        1)[noteModelIndex - 1]),
+                                          ),
+                                          NoteCard(
+                                            heightOfConnector: 0,
+                                            describtionText: repository
+                                                .getByMonthDate(monthIndex + 1)[
+                                                    noteModelIndex - 1]
+                                                .description,
+                                            titleText: repository
+                                                .getByMonthDate(monthIndex + 1)[
+                                                    noteModelIndex - 1]
+                                                .title,
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Stack(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              TimelineIndicator(
+                                                dayName: getWeekDay(repository
+                                                    .getByMonthDate(monthIndex +
+                                                        1)[noteModelIndex - 1]
+                                                    .createdAt
+                                                    .toJalali()
+                                                    .weekDay),
+                                                dayNumber: repository
+                                                    .getByMonthDate(monthIndex +
+                                                        1)[noteModelIndex - 1]
+                                                    .createdAt
+                                                    .toJalali()
+                                                    .day,
+                                                onTap: () => repository.delete(
+                                                    repository.getByMonthDate(
+                                                            monthIndex + 1)[
+                                                        noteModelIndex - 1]),
+                                              ),
+                                              NoteCard(
+                                                heightOfConnector: 220,
+                                                describtionText: repository
+                                                    .getByMonthDate(monthIndex +
+                                                        1)[noteModelIndex - 1]
+                                                    .description,
+                                                titleText: repository
+                                                    .getByMonthDate(monthIndex +
+                                                        1)[noteModelIndex - 1]
+                                                    .title,
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 60, left: 60, top: 193),
+                                            child: Divider(
+                                              color: subtitleColor,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  } else {
+                                    return EmptyWidget();
+                                  }
+                                },
+                                itemCount: repository
+                                        .getByMonthDate(monthIndex + 1)
+                                        .isNotEmpty
+                                    ? repository
+                                            .getByMonthDate(monthIndex + 1)
+                                            .length +
+                                        1
+                                    : 1),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),

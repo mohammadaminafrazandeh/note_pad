@@ -23,8 +23,8 @@ class HiveNotesSource implements DataSource<NoteModel> {
   }
 
   @override
-  Future<void> delete(NoteModel data) async {
-    await data.delete();
+  void delete(NoteModel data) {
+    data.delete();
   }
 
   @override
