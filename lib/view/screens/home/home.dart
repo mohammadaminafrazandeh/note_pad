@@ -78,13 +78,17 @@ class HomeScreen extends StatelessWidget {
                         children: List.generate(
                           monthsInPersian.length,
                           (monthIndex) {
+                            List<NoteModel> ListModelDesiredMonth =
+                                repository.getByMonthDate(monthIndex + 1);
                             return Padding(
                               padding: const EdgeInsets.only(right: 15),
                               child: ListView.builder(
                                   itemBuilder: (context, noteModelIndex) {
-                                    if (repository
-                                        .getByMonthDate(monthIndex + 1)
-                                        .isNotEmpty) {
+                                    int trueNoteModelIndex = noteModelIndex - 1;
+                                    NoteModel desiredNote =
+                                        ListModelDesiredMonth[
+                                            trueNoteModelIndex];
+                                    if (ListModelDesiredMonth.isNotEmpty) {
                                       if (noteModelIndex == 0) {
                                         return Row(
                                           children: [
@@ -93,22 +97,15 @@ class HomeScreen extends StatelessWidget {
                                           ],
                                         );
                                       } else if (noteModelIndex ==
-                                          repository
-                                              .getByMonthDate(monthIndex + 1)
-                                              .length) {
+                                          ListModelDesiredMonth.length) {
                                         return Column(
                                           children: [
                                             TimelineIndicator(
-                                              dayName: getWeekDay(repository
-                                                  .getByMonthDate(monthIndex +
-                                                      1)[noteModelIndex - 1]
+                                              dayName: getWeekDay(desiredNote
                                                   .createdAt
                                                   .toJalali()
                                                   .weekDay),
-                                              dayNumber: repository
-                                                  .getByMonthDate(monthIndex +
-                                                      1)[noteModelIndex - 1]
-                                                  .createdAt
+                                              dayNumber: desiredNote.createdAt
                                                   .toJalali()
                                                   .day,
                                               onTap: () {
@@ -121,14 +118,9 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                             NoteCard(
                                               heightOfConnector: 0,
-                                              describtionText: repository
-                                                  .getByMonthDate(monthIndex +
-                                                      1)[noteModelIndex - 1]
-                                                  .description,
-                                              titleText: repository
-                                                  .getByMonthDate(monthIndex +
-                                                      1)[noteModelIndex - 1]
-                                                  .title,
+                                              describtionText:
+                                                  desiredNote.description,
+                                              titleText: desiredNote.title,
                                             ),
                                           ],
                                         );
@@ -139,20 +131,10 @@ class HomeScreen extends StatelessWidget {
                                               children: [
                                                 TimelineIndicator(
                                                     dayName: getWeekDay(
-                                                        repository
-                                                            .getByMonthDate(
-                                                                monthIndex +
-                                                                    1)[
-                                                                noteModelIndex -
-                                                                    1]
-                                                            .createdAt
+                                                        desiredNote.createdAt
                                                             .toJalali()
                                                             .weekDay),
-                                                    dayNumber: repository
-                                                        .getByMonthDate(
-                                                            monthIndex +
-                                                                1)[
-                                                            noteModelIndex - 1]
+                                                    dayNumber: desiredNote
                                                         .createdAt
                                                         .toJalali()
                                                         .day,
@@ -165,18 +147,14 @@ class HomeScreen extends StatelessWidget {
                                                     }),
                                                 NoteCard(
                                                   heightOfConnector: 220,
-                                                  describtionText: repository
-                                                      .getByMonthDate(
-                                                          monthIndex +
-                                                              1)[
-                                                          noteModelIndex - 1]
-                                                      .description,
-                                                  titleText: repository
-                                                      .getByMonthDate(
-                                                          monthIndex +
-                                                              1)[
-                                                          noteModelIndex - 1]
-                                                      .title,
+                                                  describtionText:
+                                                      ListModelDesiredMonth[
+                                                              trueNoteModelIndex]
+                                                          .description,
+                                                  titleText:
+                                                      ListModelDesiredMonth[
+                                                              trueNoteModelIndex]
+                                                          .title,
                                                 ),
                                               ],
                                             ),
@@ -196,13 +174,8 @@ class HomeScreen extends StatelessWidget {
                                       return EmptyWidget();
                                     }
                                   },
-                                  itemCount: repository
-                                          .getByMonthDate(monthIndex + 1)
-                                          .isNotEmpty
-                                      ? repository
-                                              .getByMonthDate(monthIndex + 1)
-                                              .length +
-                                          1
+                                  itemCount: ListModelDesiredMonth.isNotEmpty
+                                      ? ListModelDesiredMonth.length + 1
                                       : 1),
                             );
                           },
