@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/repo/repository.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:note_pad/constants/constants.dart';
 
 class NoteCard extends StatelessWidget {
   final double heightOfConnector;
@@ -72,50 +71,53 @@ class TimelineIndicator extends StatelessWidget {
       'این تست توضیحات میباشد لذا متن بلند تری برای آن در نظر گرفته شده چون توضیحات معمولا طولانی تر از عنوان یا بخش های دیگر هستند و نیاز به این دارند که آور فلوشان با توجه به اسکرین تنظیم شود';
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        //* circle avatar that contains day's number
-        CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor,
-          child: Text(
-            dayNumber.toString(),
-            style: Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(fontWeight: FontWeight.w400),
+    return Padding(
+      padding: EdgeInsets.only(left: 20),
+      child: Row(
+        children: [
+          //* circle avatar that contains day's number
+          CircleAvatar(
+            backgroundColor: Theme.of(context).primaryColor,
+            child: Text(
+              dayNumber.toString(),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall!
+                  .copyWith(fontWeight: FontWeight.w400),
+            ),
           ),
-        ),
-        //* text that contains day's name of the week and if is today then it shows 'امروز' and if it's yesterday then it shows 'دیروز'
-        Container(
-          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-          margin: EdgeInsets.only(right: 20),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorLight,
-            borderRadius: BorderRadius.circular(25),
+          //* text that contains day's name of the week and if is today then it shows 'امروز' and if it's yesterday then it shows 'دیروز'
+          Container(
+            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+            margin: EdgeInsets.only(right: 20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorLight,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Text(
+              dayName,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall!
+                  .copyWith(fontWeight: FontWeight.normal),
+            ),
           ),
-          child: Text(
-            dayName,
-            style: Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(fontWeight: FontWeight.normal),
-          ),
-        ),
-        SizedBox(width: 150),
-        InkWell(
-          onTap: onTap,
-          child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Colors.red[300],
-                  borderRadius: BorderRadius.circular(20)),
-              child: Icon(
-                CupertinoIcons.delete,
-                color: Colors.white,
-              )),
-        )
-      ],
+          Spacer(),
+          InkWell(
+            onTap: onTap,
+            child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Colors.red[300],
+                    borderRadius: BorderRadius.circular(20)),
+                child: Icon(
+                  CupertinoIcons.delete,
+                  color: Colors.white,
+                )),
+          )
+        ],
+      ),
     );
   }
 }
