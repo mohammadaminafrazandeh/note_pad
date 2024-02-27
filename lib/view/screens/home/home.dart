@@ -111,10 +111,13 @@ class HomeScreen extends StatelessWidget {
                                                   .createdAt
                                                   .toJalali()
                                                   .day,
-                                              onTap: () => repository.delete(
-                                                  repository.getByMonthDate(
-                                                          monthIndex + 1)[
-                                                      noteModelIndex - 1]),
+                                              onTap: () {
+                                                return DeleteDialoge(
+                                                    context,
+                                                    repository,
+                                                    monthIndex,
+                                                    noteModelIndex);
+                                              },
                                             ),
                                             NoteCard(
                                               heightOfConnector: 0,
@@ -135,29 +138,31 @@ class HomeScreen extends StatelessWidget {
                                             Column(
                                               children: [
                                                 TimelineIndicator(
-                                                  dayName: getWeekDay(repository
-                                                      .getByMonthDate(
-                                                          monthIndex +
-                                                              1)[
-                                                          noteModelIndex - 1]
-                                                      .createdAt
-                                                      .toJalali()
-                                                      .weekDay),
-                                                  dayNumber: repository
-                                                      .getByMonthDate(
-                                                          monthIndex +
-                                                              1)[
-                                                          noteModelIndex - 1]
-                                                      .createdAt
-                                                      .toJalali()
-                                                      .day,
-                                                  onTap: () => repository
-                                                      .delete(repository
-                                                              .getByMonthDate(
-                                                                  monthIndex +
-                                                                      1)[
-                                                          noteModelIndex - 1]),
-                                                ),
+                                                    dayName: getWeekDay(
+                                                        repository
+                                                            .getByMonthDate(
+                                                                monthIndex +
+                                                                    1)[
+                                                                noteModelIndex -
+                                                                    1]
+                                                            .createdAt
+                                                            .toJalali()
+                                                            .weekDay),
+                                                    dayNumber: repository
+                                                        .getByMonthDate(
+                                                            monthIndex +
+                                                                1)[
+                                                            noteModelIndex - 1]
+                                                        .createdAt
+                                                        .toJalali()
+                                                        .day,
+                                                    onTap: () {
+                                                      return DeleteDialoge(
+                                                          context,
+                                                          repository,
+                                                          monthIndex,
+                                                          noteModelIndex);
+                                                    }),
                                                 NoteCard(
                                                   heightOfConnector: 220,
                                                   describtionText: repository
@@ -212,6 +217,30 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<dynamic> DeleteDialoge(BuildContext context,
+      Repository<NoteModel> repository, int monthIndex, int noteModelIndex) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Text('آیا از حذف این یادداشت اطمینان دارید؟'),
+              actions: [
+                TextButton(
+                    child: Text('خیر'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                TextButton(
+                    child: Text('بله'),
+                    onPressed: () {
+                      repository.delete(repository
+                          .getByMonthDate(monthIndex + 1)[noteModelIndex - 1]);
+                      Navigator.pop(context);
+                    })
+              ]);
+        });
   }
 
   String getWeekDay(int day) {
