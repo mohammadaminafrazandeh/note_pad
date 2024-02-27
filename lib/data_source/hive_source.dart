@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_pad/data_source/data_source.dart';
 import 'package:note_pad/data/model/note_model.dart';
