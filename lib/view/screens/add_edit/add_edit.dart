@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+import 'package:note_pad/constants/constants.dart';
 import 'package:note_pad/repo/repository.dart';
 import 'package:provider/provider.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 import 'package:note_pad/data/model/note_model.dart';
 
 class AddOrEditScreen extends StatefulWidget {
-  NoteModel note;
+  final NoteModel note;
   AddOrEditScreen({
     Key? key,
     required this.note,
@@ -22,53 +24,52 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'افزودن',
-              style: theme.textTheme.titleLarge!.copyWith(fontSize: 30),
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+        statusBarColor: backgorundColor,
+      ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SafeArea(
+          child: Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                widget.note.title = titleController.text;
+                widget.note.description = descriptionController.text;
+                widget.note.createdAt = DateTime.now();
+                context
+                    .read<Repository<NoteModel>>()
+                    .createOrUpdate(widget.note);
+                Navigator.of(context).pop();
+              },
+              label: Text('ذخیره'),
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              widget.note.title = titleController.text;
-              widget.note.description = descriptionController.text;
-              widget.note.createdAt = DateTime.now();
-              context.read<Repository<NoteModel>>().createOrUpdate(widget.note);
-              Navigator.of(context).pop();
-            },
-            label: Text('ذخیره'),
-          ),
-          body: Form(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 40),
-                    SizedBox(
-                      height: 150,
-                      //* title of the note
-                      child: MyTextFormField(
-                        controller: titleController,
-                        labelText: 'عنوان:',
-                      ),
-                    ),
-                    SizedBox(height: 40),
-                    SizedBox(
-                        height: 400,
-                        //* description of the note
+            body: Form(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 150,
+                        //* title of the note
                         child: MyTextFormField(
-                          controller: descriptionController,
-                          labelText: 'توضیحات:',
-                        )),
-                  ],
+                          controller: titleController,
+                          labelText: 'عنوان:',
+                        ),
+                      ),
+                      SizedBox(height: 40),
+                      SizedBox(
+                          height: 400,
+                          //* description of the note
+                          child: MyTextFormField(
+                            controller: descriptionController,
+                            labelText: 'توضیحات:',
+                          )),
+                    ],
+                  ),
                 ),
               ),
             ),

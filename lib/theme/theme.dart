@@ -11,17 +11,12 @@ ThemeData MyLightTheme() {
     primaryColorDark: foregroundColor,
     primaryColorLight: subtitleColor,
     //* APPBAR
-    appBarTheme: AppBarTheme(
-        backgroundColor: primaryColor, foregroundColor: foregroundColor),
+    appBarTheme: AppBarTheme(foregroundColor: foregroundColor),
     //* FAB
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         foregroundColor: black, backgroundColor: primaryColor),
     //* INPUT
-    inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: BorderSide(color: black)),
-    ),
+    inputDecorationTheme: InputDecorationTheme(border: InputBorder.none),
     //* LIST TILE
     listTileTheme: ListTileThemeData(
         titleTextStyle: TextStyle(color: primaryColor),
@@ -31,33 +26,33 @@ ThemeData MyLightTheme() {
       //* bodies
       bodyLarge: TextStyle(
           color: foregroundColor,
-          fontFamily: 'Iransans',
+          fontFamily: 'Yekan',
           fontSize: 20,
           fontWeight: FontWeight.normal),
       bodyMedium: TextStyle(
           color: foregroundColor,
-          fontFamily: 'Iransans',
+          fontFamily: 'Yekan',
           fontSize: 17,
           fontWeight: FontWeight.normal),
       bodySmall: TextStyle(
           color: foregroundColor,
-          fontFamily: 'Iransans',
+          fontFamily: 'Yekan',
           fontSize: 14,
           fontWeight: FontWeight.normal),
       //* titles
       titleLarge: TextStyle(
           color: black,
-          fontFamily: 'Iransans',
+          fontFamily: 'Yekan',
           fontSize: 23,
           fontWeight: FontWeight.bold),
       titleMedium: TextStyle(
           color: black,
-          fontFamily: 'Iransans',
+          fontFamily: 'Yekan',
           fontSize: 20,
           fontWeight: FontWeight.bold),
       titleSmall: TextStyle(
           color: black,
-          fontFamily: 'Iransans',
+          fontFamily: 'Yekan',
           fontSize: 17,
           fontWeight: FontWeight.bold),
     ),
